@@ -1,0 +1,31 @@
+
+type TotalBalance {
+    id: ID!
+    total_balance: number!
+
+}
+
+type AmountSpent {
+    id: ID!
+    money_spent: number!
+    description: string
+    day_was_the_spent: string;
+}
+
+input AmountSpentInput {
+    money_spent: number!
+    description: string
+    day_was_the_spent: string;
+}
+
+type Mutation {
+
+    createTotalBalance(id_user: ID!): boolean
+    alreadyHaveBalance(email: string!): boolean
+    getBalance(id_user: ID!): number
+    insertValueIntoTotalBalance(valueIntered: number!, id_user: ID!): boolean
+    deductValueFromTheTotalBalance(amountToBeDeducted: number!, id_user: ID!): boolean
+    amountSpentByTheUser(amountSpent: AmountSpentInput!): boolean
+
+
+}
