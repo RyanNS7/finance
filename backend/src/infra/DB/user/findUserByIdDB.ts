@@ -1,4 +1,5 @@
 import { UserDTO } from "../../../domain/entities/user/userDTO"
+import { NotFound } from "../../../errors/baseError"
 import { prisma } from "../prisma"
 
 export async function findUserById(id_user: string){
@@ -7,6 +8,6 @@ export async function findUserById(id_user: string){
 
         return new UserDTO(user)
     } catch (error) {
-        return error
+        return new NotFound(error)
     }
 } 
