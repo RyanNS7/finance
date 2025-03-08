@@ -8,7 +8,7 @@ class BaseError extends Error{
     }
 }
 
-class NotFound extends BaseError{
+export class NotFound extends BaseError{
 
     message: string
     
@@ -17,7 +17,7 @@ class NotFound extends BaseError{
     }
 }
 
-class InvalidEmail extends BaseError{
+export class InvalidEmail extends BaseError{
     message: string
 
     constructor(message: string){
@@ -25,10 +25,18 @@ class InvalidEmail extends BaseError{
     }
 }
 
-class InsufficientCharacters extends BaseError{
+export class InsufficientCharacters extends BaseError{
     message: string
 
     constructor(message: string){
         super(message, {code: "INSUFFICIENT_CHARACTERS"})
+    }
+}
+
+export class NumberError extends BaseError{
+    message: string
+
+    constructor(message: string){
+        super(message, {code: "NUMBER_ERROR"})
     }
 }
