@@ -1,6 +1,7 @@
 import { User } from "../../domain/entities/user/user";
 import { UserDTO } from "../../domain/entities/user/userDTO";
 import { IUserRepository } from "../../domain/usecases/user/userRepository";
+import { NotFound } from "../../errors/baseError";
 import { createUserDB } from "../DB/user/createUserDB";
 import { findUserByEmail } from "../DB/user/findUserByEmailDB";
 import { findUserById } from "../DB/user/findUserByIdDB";
@@ -12,14 +13,14 @@ export class UserRepositoryDB implements IUserRepository{
         return new UserDTO(userInfo)
     }
 
-    async findUserByEmail(email: string): Promise<UserDTO> {
+    async findUserByEmail(email: string): Promise<UserDTO | NotFound> {
 
         const user = await findUserByEmail(email)
 
         return user
     }
 
-    async findUserById(id: string): Promise<UserDTO> {
+    async findUserById(id: string): Promise<UserDTO | NotFound> {
         const user = await findUserById(id)
 
         return user
