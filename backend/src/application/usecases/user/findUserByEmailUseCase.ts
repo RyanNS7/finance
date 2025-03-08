@@ -1,3 +1,4 @@
+import { UserDTO } from "../../../domain/entities/user/userDTO";
 import { IUserRepository } from "../../../domain/usecases/user/userRepository";
 
 export class findUserByEmail {
@@ -11,6 +12,10 @@ export class findUserByEmail {
 
         const userInfo = await this.userRepo.findUserByEmail(email)
 
-        return userInfo.user
+        if(userInfo instanceof UserDTO){
+            return userInfo.user
+        }
+
+        return userInfo
     }
 }
