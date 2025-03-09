@@ -5,21 +5,11 @@ import { UserRepositoryDB } from "../../infra/implementations/userRepository";
 import { findUserById } from "../../application/usecases/user/findUserByIdUseCase";
 import { createUser } from "../../application/usecases/user/createUserUseCase";
 import { CryptographyRepository } from "../../infra/implementations/cryptographyRepository";
-import { getBalance } from "../../infra/DB/balance/getBalanceDB";
-import { deductValueFromTheTotalBalance } from "../../infra/DB/balance/deductValueFromTheTotalBalanceDB";
-import { insertValueIntoTotalBalance } from "../../infra/DB/balance/insertValueIntoTotalBalanceDB";
-
-@ObjectType()
-export class Balance{
-    @Field(type => ID!)
-    id: String
-
-    @Field(type => Int! )
-    total_balance: Number
-
-    @Field(() => String)
-    userID: String
-}
+import { Balance } from "../modules/balance/balance";
+import { BalanceRepository } from "../../infra/implementations/balanceRepository";
+import { GetBalance } from "../../application/usecases/balance/getBalanceUseCase";
+import { TotalBalanceDTO } from "../../domain/entities/finance/totalBalanceDTO";
+import { NotFound } from "../../errors/baseError";
 
 @Resolver(User)
 export class UserResolver{
@@ -40,9 +30,13 @@ export class UserResolver{
     @FieldResolver(() => Balance!)
     async totalBalance(@Root() user: User){
         
-        const balance = await getBalance(String(user.id))
+        const balance = await new GetBalance(new BalanceRepository()).get(String(user.id))
+
+        if(balance instanceof NotFound){
+            return balance
+        }
         
-        return {...balance.totalBalance, total_balance: Number(balance.totalBalance.total_balance)}
+        return {...(balance as TotalBalanceDTO).totalBalance, total_balance: Number((balance as TotalBalanceDTO).totalBalance.total_balance)}
     }
 
 }
